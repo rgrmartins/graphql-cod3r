@@ -1,5 +1,17 @@
 const { usuarios, perfis } = require('../data/db')
 
+//Método de busca no array
+function indiceUsuario(filtro) {
+    if(!filtro) return -1
+    const { id, email } = filtro
+    if (id) {
+        return usuarios.findIndex(u => u.id === id)
+    } else if (email){
+        return usuarios.findIndex(u => u.email === email)
+    }
+    return -1
+}
+
 module.exports = {
     ola() {
         return 'Basta retornar uma String'
@@ -36,9 +48,11 @@ module.exports = {
         return usuarios
     },
     //usuario(_, { id }) melhor forma de usar do que acessar args
-    usuario(_, args) {
-        const sels = usuarios.filter(u => u.id === args.id)
-        return sels ? sels[0] : null
+    usuario(_, { filtro }) {
+        //const sels = usuarios.filter(u => u.id === args.id)
+        const i = indiceUsuario(filtro)
+        if (i < 0) return null
+        return usuarios[i]
     },
     perfis() {
         return perfis
