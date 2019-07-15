@@ -1,0 +1,12 @@
+#Pontos de entrada da sua API! Buscas que podem ser feitas com ou sem parametros
+type Query {
+    ola: String
+    horaAtual: Date
+    usuarioLogado: Usuario
+    produtoEmDestaque: Produto
+    numerosMegaSena: [Int!]!
+    usuarios: [Usuario]
+    usuario(id: Int): Usuario
+    perfis: [Perfil]
+    perfil(id: Int): Perfil
+}
