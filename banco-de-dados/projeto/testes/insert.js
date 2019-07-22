@@ -20,7 +20,8 @@ const perfilSU = {
     rotulo: 'Super Usuário'
 }
 
-db.insert(perfilSU).into('perfis')
+db.insert(perfilSU)
+    .into('perfis')
     .then(res => console.log(res))
     .catch(err => console.log(err.sqlMessage))
     .finally(() => db.destroy())

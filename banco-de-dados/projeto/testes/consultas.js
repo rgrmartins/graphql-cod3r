@@ -1,6 +1,6 @@
 const db = require('../config/db')
 
-//Uma forma de fazer select
+//Uma forma de fazer select (Aqui traz tudo)
 // db('perfis')
 //     .map(p => p.nome)
 //     .then(nomes => console.log(nomes))
