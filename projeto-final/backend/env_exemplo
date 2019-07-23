@@ -1,0 +1,9 @@
+NODE_ENV=development
+
+APP_DB_HOST=localhost
+APP_DB_PORT=3306
+APP_DB_NAME=nome-schema
+APP_DB_USER=nome-user
+APP_DB_PASSWORD=banco-password
+
+APP_AUTH_SECRET=escolher um segredo
