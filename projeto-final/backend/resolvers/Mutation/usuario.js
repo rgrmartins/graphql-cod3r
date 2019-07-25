@@ -1,19 +1,41 @@
+const bcrypt = require('bcrypt-nodejs')
 const db = require('../../config/db')
 const { perfil: obterPerfil } = require('../Query/perfil')
 const { usuario: obterUsuario } = require('../Query/usuario')
 
-module.exports = {
+const mutations = {
+    registrarUsuario(_, { dados }){
+        return mutations.novoUsuario(_, {
+            //deixar de forma mais explicita, para garantir a segurança
+            dados: {
+                nome: dados.nome,
+                email: dados.email,
+                senha: dados.senha,
+                perfis: null //assim garanto que no novoUsuario será setado somente o perfil comum
+            }
+        })
+    },
     async novoUsuario(_, { dados }) {
         try {
             const idsPerfis = []
-            if(dados.perfis) {
-                for(let filtro of dados.perfis) {
-                    const perfil = await obterPerfil(_, {
-                        filtro
-                    })
-                    if(perfil) idsPerfis.push(perfil.id)
-                }
+
+            //se vier sem nenhum dado de perfil, forçaremos a ter um pefil comum
+            if(!dados.perfis || !dados.perfis.length){
+                dados.perfis = [{
+                    nome: 'comum'
+                }]
             }
+            
+            for(let filtro of dados.perfis) {
+                const perfil = await obterPerfil(_, {
+                    filtro
+                })
+                if(perfil) idsPerfis.push(perfil.id)
+            }
+
+            //Criptografar a senha do usuário
+            const salt = bcrypt.genSaltSync()
+            dados.senha = bcrypt.hashSync(dados.senha, salt) //senha criptografada gerada
 
             delete dados.perfis
             const [ id ] = await db('usuarios')
@@ -70,6 +92,12 @@ module.exports = {
                     }
                 }
 
+                //Criptografar a senha do usuário, caso tenha sido alterada
+                if (dados.senha){
+                    const salt = bcrypt.genSaltSync()
+                    dados.senha = bcrypt.hashSync(dados.senha, salt) //senha criptografada gerada
+                }
+
                 delete dados.perfis
                 await db('usuarios')
                     .where({ id })
@@ -81,3 +109,5 @@ module.exports = {
         }
     }
 }
+
+module.exports = mutations
