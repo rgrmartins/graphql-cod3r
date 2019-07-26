@@ -1,4 +1,5 @@
 NODE_ENV=development
+#NODE_ENV=production #quando está em produção o graphql playground fica desabilitado
 
 APP_DB_HOST=localhost
 APP_DB_PORT=3306
