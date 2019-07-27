@@ -53,6 +53,7 @@
 
 <script>
 import Erros from '../comum/Erros'
+import gql from 'graphql-tag'
 
 export default {
     components: { Erros },
@@ -82,7 +83,9 @@ export default {
             // implementar
         },
         obterPerfis() {
-            // implementar
+            this.$api.query({
+                //aqui conseguimos executar a query conforme queremos
+            })
         }
     }
 }
